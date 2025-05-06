@@ -1,9 +1,17 @@
+import jwt from "jsonwebtoken";
 
+export function isAuthenticated(req, res, next) {
+    const token = req.cookies.authToken;
 
-export function isAuthenticated(req,res,next){
-    if(req.cookies?.userEmail){
+    if (!token) {
+        return res.redirect("/api/login");
+    }
+
+    try {
+        const decoded = jwt.verify(token, "kyler123");
+        req.user = decoded; // Attach user data to request
         next();
-    } else{
-        res.redirect("/signup");
+    } catch (err) {
+        return res.redirect("/api/login");
     }
 }
