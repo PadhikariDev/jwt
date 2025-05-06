@@ -17,12 +17,22 @@ async function registerUser(req,res) {
         const newUser = new User({firstName,lastName,email,password});
         await newUser.save();
 
-        res.render("signup", { message: "Logged in successfully!" });
+        res.cookie("userEmail",email,{
+            httpOnly:true,
+        });
+
+        res.redirect("/api/dashboard");
 
     } catch (error) {
         res.render("signup", { message: "Error occurred: " + error.message });
     }
 }
+
+export const showDashboard = (req, res) => {
+    const email = req.cookies.userEmail;
+    res.render("dashboard", {email});
+  };
+  
 
 
 export {

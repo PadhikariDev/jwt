@@ -4,6 +4,8 @@ import connectMongo from "./connect.js";
 import authRoutes from "./routes/authRoutes.js"
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
+
 
 const app = express();
 const PORT=4000;
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //middleware
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api",authRoutes);
 
